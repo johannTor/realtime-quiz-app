@@ -13,9 +13,22 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
 
   const startQuiz = () => {
     setQuizStarted(true);
-    const startObj = {msg: 'Quiz has started', status: true};
+    const startObj = {msg: 'Quiz has started', status: true, room, question: theQuiz[currentQuestion], questionCount: theQuiz.length};
     socket.emit('start quiz', startObj);
   }
+  // Len = 2 
+  const nextQuestion = () => {
+    // Check if we still have at least one question left
+    if(currentQuestion < theQuiz.length -1) {
+      const oldQuestion = currentQuestion;
+      setCurrentQuestion(oldQuestion+1);
+      const questionObj = {msg: 'Next question', status: true, room, question: theQuiz[oldQuestion+1], currentIndex: oldQuestion+1};
+      socket.emit('next question', questionObj);
+    } else {  // We are on the last question
+      // ToDo: Finish Quiz Screen/event
+      console.log('Final Ques');
+    }
+  };
 
   return (
     <div className="creatorContainer">
@@ -23,7 +36,6 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       <h3 className="adminUrl">{url}</h3>
       <div className="creatorPanels">
         <div className="leftSidebar">
-          leftasefioasjeofijasoeifasoef
         </div>
         {quizStarted ? 
         <div className="theQuiz">
@@ -32,7 +44,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
           <div className="quizAnswers">
             {theQuiz[currentQuestion].answers.map((item) => <div key={item.id} className="quizAnswer">{item.answer}</div>)}
           </div>
-          <button className="quizButton">Next Question</button>
+          <button className="quizButton" onClick={() => nextQuestion()}>Next Question</button>
         </div>
         :
         <div className="theQuiz">

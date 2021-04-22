@@ -35,7 +35,7 @@ input:focus {
 
 .frontpageText {
   display: block;
-  width: 50%;
+  max-width: 40%;
   text-align: center;
   padding: 0.5rem;
   line-height: 1.5rem;
@@ -70,7 +70,7 @@ input:focus {
 .questionInputs {
   width: 60%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   justify-content: center;
   align-items: center;
   gap: 4rem;
@@ -79,7 +79,6 @@ input:focus {
 
 .inputCard {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 8rem;
@@ -87,7 +86,7 @@ input:focus {
   border-radius: 20px;
   /* transition: all 0.1s; */
   cursor: default;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .addQuestion {
@@ -105,6 +104,10 @@ input:focus {
 
 .inputCard:hover {
   transform: scale(1.02);
+}
+
+.inputCard:active {
+  background-color: #364057;  
 }
 
 .addQuestion:hover {

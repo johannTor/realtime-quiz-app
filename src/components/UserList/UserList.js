@@ -8,7 +8,7 @@ export default function UserList({users}) {
   return (
     <div className="userList">
       <div className="listHeader">Participants</div>
-      <div className="userCount">1/20</div>
+      <div className="userCount">{users.length}/20</div>
       {users.map((item) => <div key={item.userID}>{item.username}</div>)}
     </div>
   )
