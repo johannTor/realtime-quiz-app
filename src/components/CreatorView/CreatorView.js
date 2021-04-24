@@ -4,6 +4,7 @@ import './creatorView.css';
 
 export default function CreatorView({theQuiz, userList, socket, room}) {
   const [quizStarted, setQuizStarted] = useState(false);
+  const [itemClass, setItemClass] = useState('quizAnswer');
   const [show, setShow] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const url = window.location.href;
@@ -20,6 +21,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
 
   const startQuiz = () => {
     setQuizStarted(true);
+    fadeAnswers();
     const startObj = {msg: 'Quiz has started', status: true, room, question: theQuiz[currentQuestion], questionCount: theQuiz.length};
     socket.emit('start quiz', startObj);
   }
@@ -27,6 +29,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
   const nextQuestion = () => {
     // Check if we still have at least one question left
     if(currentQuestion < theQuiz.length -1) {
+      fadeAnswers();
       const oldQuestion = currentQuestion;
       setCurrentQuestion(oldQuestion+1);
       const questionObj = {msg: 'Next question', status: true, room, question: theQuiz[oldQuestion+1], currentIndex: oldQuestion+1};
@@ -36,6 +39,13 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       console.log('Final Ques');
     }
   };
+
+  // Same function as in partakerView.js, reuse?
+  const fadeAnswers = () => {
+    setItemClass('quizAnswer'); // Hiding;
+    setTimeout(() => setItemClass('quizAnswer showAnswer'), 300);
+  };
+  
   console.log('Loaded: ', show);
   const answerClasses = show ? 'quizAnswers answerBorder' : 'quizAnswers answerBorder collapsed';
   return (
@@ -51,7 +61,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
         <div className="theQuiz">
           <div className="quizQuestion">{theQuiz[currentQuestion].question}</div>
           <div className={answerClasses}>
-            {theQuiz[currentQuestion].answers.map((item) => <div key={item.id} className="quizAnswer">{item.answer}</div>)}
+            {theQuiz[currentQuestion].answers.map((item) => <div key={item.id} className={itemClass}>{item.answer}</div>)}
           </div>
           <button className="quizButton" onClick={() => nextQuestion()}>Next Question</button>
         </div>

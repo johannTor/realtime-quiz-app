@@ -32,7 +32,7 @@ export default function Login({location}) {
         <div className="loginContainer">
           <div className="loginTitle">Choose a username</div>
           <form className="loginForm" onSubmit={(ev) => handleLogin(ev)}>
-            <input type="text" onChange={(ev) => setUserName(ev.target.value)} placeholder="Username"/>
+            <input type="text" onChange={(ev) => setUserName(ev.target.value)} autoFocus={true} placeholder="Username"/>
             <button type="submit" className="buttonBorder">Login</button>
           </form>
         </div>

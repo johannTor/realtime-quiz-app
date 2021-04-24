@@ -7,7 +7,12 @@ export default function QuestionInputs() {
   // Initial questions state for real use
   // const [questions, setQuestions] = useState([{id: uuidv4(), question: 'Create Question', answers: [{id: 0, answer: '', isCorrect: false}]}]);
   const [questions, setQuestions] = useState([{id: uuidv4(), question: 'What is the capital of France?', answers: [{id: 0, answer: 'Paris', isCorrect: true}, {id: 1, answer: 'Berlin', isCorrect: false}, {id: 2, answer: 'Moscow', isCorrect: false}]},
-                                              {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Madrid', isCorrect: false}]}]);
+                                              {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
+                                              {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]},
+                                              {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]},
+                                              {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
+                                              {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]},
+                                              {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]}]);
   // const [questionList, setQuestionList] = useState([<InputCard />])
 
   const addInput = () => {

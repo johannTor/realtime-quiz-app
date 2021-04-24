@@ -4,16 +4,19 @@ import './partakerView.css'
 
 export default function PartakerView({socket, userName, userList}) {
   const [hasStarted, setHasStarted] = useState(false);
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
+  const [answerClasses, setAnswerClasses] = useState('quizAnswers answerBorder collapsed');
+  const [itemClass, setItemClass] = useState('quizAnswer');
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [currentAnswers, setCurrentAnswers] = useState([]);
   const [questionCount, setQuestionCount] = useState(0);
-  const [currentPosition, setCurrentPosition] = useState(1)
+  const [currentPosition, setCurrentPosition] = useState(1);
 
   useEffect(() => {
     socket.on('quiz started', (quizObj) => {  // I'm recieving a message property, somehow display a toast that quiz has started?
       console.log('Recieved quiz started');
       setHasStarted(quizObj.status);
+      fadeAnswers();
       setCurrentQuestion(quizObj.question.question);
       setCurrentAnswers(quizObj.question.answers);
       setQuestionCount(quizObj.questionCount);
@@ -21,6 +24,7 @@ export default function PartakerView({socket, userName, userList}) {
 
     socket.on('get next question', (qObject) => { // Recieving the next question object
       console.log('Next Question: ', qObject);
+      fadeAnswers();
       setCurrentQuestion(qObject.question.question);
       setCurrentAnswers(qObject.question.answers);
       setCurrentPosition(qObject.currentIndex + 1);
@@ -34,11 +38,15 @@ export default function PartakerView({socket, userName, userList}) {
 
   useEffect(() => {
     if(hasStarted) {
-      setTimeout(() => setShow(true), 200);
+      setTimeout(() => setAnswerClasses('quizAnswers answerBorder'), 200);
     }
   }, [hasStarted]);
 
-  const answerClasses = show ? 'quizAnswers answerBorder' : 'quizAnswers answerBorder collapsed';
+  // Quikly hide and review the answer items
+  const fadeAnswers = () => {
+    setItemClass('quizAnswer'); // Hiding;
+    setTimeout(() => setItemClass('quizAnswer showAnswer'), 300);
+  };
 
   return (
     <>
@@ -65,7 +73,7 @@ export default function PartakerView({socket, userName, userList}) {
           <div className="theQuiz">
             <div className="quizQuestion">{currentQuestion}</div>
             <div className={answerClasses}>
-              {currentAnswers.map((item) => <div key={item.id} className="quizAnswer">{item.answer}</div>)}
+              {currentAnswers.map((item) => <div key={item.id} className={itemClass}>{item.answer}</div>)}
             </div>
           </div>
           <UserList users={userList}/>
