@@ -40,20 +40,34 @@ export default function QuestionInputs() {
   // const listElement = questionList.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>);
 
   return (
-    <>
-      <div className="questionInputs">
-        {/* {listElement} */}
-        {questions.map((item, index) => <InputCard key={index} questionId={item.id} question={item.question} answers={item.answers} setQuestion={updateQuestion} setAnswers={updateAnswers} />)}
-        <div className="addQuestion" onClick={() => addInput()}>
-          +
+    <div className="creatorPanels">
+      <div className="leftSidebar">
+        <div className="logo">
+          InstaQuiz
+        </div>
+      </div>
+      <div className="creatorContent">
+        <div className="questionGreeting">
+          <div>Do you want to create a quiz and allow your students/co-workers/friends/family to participate in real time? If so you're in the right place!</div>
+          <div>Start by</div>
+          <div>Creating your questions</div>
+        </div>
+        <div className="questionInputs">
+          {/* {listElement} */}
+          {questions.map((item, index) => <InputCard key={index} questionId={item.id} question={item.question} answers={item.answers} setQuestion={updateQuestion} setAnswers={updateAnswers} />)}
+          <div className="addQuestion buttonBorder" onClick={() => addInput()}>
+            +
+          </div>
         </div>
       </div>
       {/* ToDo: Create a route with either a random parameter or a chosen name for the quiz, connect the user there to socket io */}
-      <Link className="startQuizBtn" to={{
-        pathname: `/quiz/${uuidv4().replaceAll('-', '')}`,
-        state: { quizCreator: true, theQuiz: questions }
-      }}>Start Quiz</Link>
-      {/* Nýtt route fyrir room */}
-    </>
+      <div className="rightSideBar">
+        <Link className="startQuizBtn" to={{
+          pathname: `/quiz/${uuidv4().replaceAll('-', '')}`,
+          state: { quizCreator: true, theQuiz: questions }
+        }}>Create Quiz</Link>
+        {/* Nýtt route fyrir room */}
+      </div>
+    </div>
   )
 }

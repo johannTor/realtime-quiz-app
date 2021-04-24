@@ -3,10 +3,24 @@ h1 {
   padding: 1rem 0;
 }
 
+.loginContainer {
+  width: 50%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loginTitle {
+  font-size: 32px;
+}
+
 .loginForm {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 }

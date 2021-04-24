@@ -4,12 +4,19 @@ import './creatorView.css';
 
 export default function CreatorView({theQuiz, userList, socket, room}) {
   const [quizStarted, setQuizStarted] = useState(false);
+  const [show, setShow] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const url = window.location.href;
 
   useEffect(() => {
-    
+    // setTimeout(() => setHladid(true), 1000);
   }, []);
+
+  useEffect(() => {
+    if(quizStarted) {
+      setTimeout(() => setShow(true), 200);
+    }
+  }, [quizStarted]);
 
   const startQuiz = () => {
     setQuizStarted(true);
@@ -29,30 +36,41 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       console.log('Final Ques');
     }
   };
-
+  console.log('Loaded: ', show);
+  const answerClasses = show ? 'quizAnswers answerBorder' : 'quizAnswers answerBorder collapsed';
   return (
-    <div className="creatorContainer">
-      <h2 className="adminTitle">Share this link with anyone you want to invite</h2>
-      <h3 className="adminUrl">{url}</h3>
-      <div className="creatorPanels">
+    <div className="creatorPanels">
+      {quizStarted ? 
+      <>
         <div className="leftSidebar">
-        </div>
-        {quizStarted ? 
-        <div className="theQuiz">
+          <div className="logo">
+            InstaQuiz
+          </div>
           <div className="quizProgress">{currentQuestion+1}/{theQuiz.length}</div>
+        </div>
+        <div className="theQuiz">
           <div className="quizQuestion">{theQuiz[currentQuestion].question}</div>
-          <div className="quizAnswers">
+          <div className={answerClasses}>
             {theQuiz[currentQuestion].answers.map((item) => <div key={item.id} className="quizAnswer">{item.answer}</div>)}
           </div>
           <button className="quizButton" onClick={() => nextQuestion()}>Next Question</button>
         </div>
-        :
+      </>
+      :
+      <>
+        <div className="leftSidebar">
+          <div className="logo">
+            InstaQuiz
+          </div>
+          <div className="adminTitle">Share this link with anyone you want to invite</div>
+          <div className="adminUrl">{url}</div>
+        </div>
         <div className="theQuiz">
           <h3>When everyone has connected</h3>
           <button onClick={() => startQuiz()}>Start Quiz</button>
-        </div>}
-        <UserList users={userList}/>
-      </div>
+        </div>
+      </> }
+      <UserList users={userList}/>
     </div>
   )
 }

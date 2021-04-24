@@ -23,12 +23,21 @@ export default function Login({location}) {
 
   return (
     <div className="app">
-      <h1>Choose a username:</h1>
-      <div className="loginContainer">
-        <form className="loginForm" onSubmit={(ev) => handleLogin(ev)}>
-          <input type="text" onChange={(ev) => setUserName(ev.target.value)} placeholder="Username"/>
-          <button type="submit">Login</button>
-        </form>
+      <div className="partakerPanels">
+        <div className="leftSidebar">
+          <div className="logo">
+            InstaQuiz
+          </div>
+        </div>
+        <div className="loginContainer">
+          <div className="loginTitle">Choose a username</div>
+          <form className="loginForm" onSubmit={(ev) => handleLogin(ev)}>
+            <input type="text" onChange={(ev) => setUserName(ev.target.value)} placeholder="Username"/>
+            <button type="submit" className="buttonBorder">Login</button>
+          </form>
+        </div>
+        <div className="userList">
+        </div>
       </div>
       {success && <Redirect to={{pathname: `/quiz/${roomName}`, state: { userName }}} />}
     </div>

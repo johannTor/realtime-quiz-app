@@ -7,9 +7,11 @@ export default function UserList({users}) {
   }, [users]);
   return (
     <div className="userList">
-      <div className="listHeader">Participants</div>
+      <div className="theUsers">
+        {users.map((item) => <div key={item.userID}>{item.username}</div>)}
+      </div>
       <div className="userCount">{users.length}/20</div>
-      {users.map((item) => <div key={item.userID}>{item.username}</div>)}
+      <div className="listHeader">Participants</div>
     </div>
   )
 }
