@@ -28,7 +28,7 @@ export default function InputCard({questionId, question, answers, setQuestion, s
       <div className="inputCard buttonBorder" onClick={() => toggleModal()}>
         <h3>{question}</h3>
       </div>
-      {openModal && <InputModal setOpen={setOpenModal} questionId={questionId} question={question} answers={answers} setQuestion={setQuestion} setAnswers={setAnswers}/>}
+      {openModal && <InputModal setOpen={setOpenModal} questionId={questionId} question={question} answers={answers} setQuestion={setQuestion} setAnswers={setAnswers} />}
     </>
   )
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import UserList from '../UserList/UserList';
 import PartakerAnswerList from '../PartakerAnswerList/PartakerAnswerList';
 import Scoreboard from '../Scoreboard/Scoreboard';
+import QuizSummary from '../QuizSummary/QuizSummary';
 import './partakerView.css'
 
 export default function PartakerView({socket, userName, userList, room}) {
@@ -16,6 +17,7 @@ export default function PartakerView({socket, userName, userList, room}) {
   const [currentPosition, setCurrentPosition] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
   const [scores, setScores] = useState({});
+  const [quiz, setQuiz] = useState([]);
   // console.log('ParSoc: ', socket);
 
   useEffect(() => {
@@ -33,9 +35,7 @@ export default function PartakerView({socket, userName, userList, room}) {
     socket.on('get next question', (qObject) => { // Recieving the next question object
       // Check if the chosen answer is correct, if it is increment user's score serverside
       const processChosenAnswer = (status) => {
-        if(chosenAnswer) {  // User has selected something
-          socket.emit('process answer', {userId: socket.id, room, question: currentQuestion, chosenAnswer, status});
-        }
+        socket.emit('process answer', {userId: socket.id, room, question: currentQuestion, chosenAnswer: !chosenAnswer ? {answer: 'bla', isCorrect: false} : chosenAnswer, status});
       };
 
       // If the recieved status is true, quiz is still going on
@@ -54,10 +54,12 @@ export default function PartakerView({socket, userName, userList, room}) {
       }
     });
 
+    // Recieving quiz scores from host once all answers have been recieved
     socket.on('get scores', (scoreObj) => {
       console.log('Recieved scores ', scoreObj);
       setIsFinished(true);
       setScores(scoreObj.scores);
+      setQuiz(scoreObj.theQuiz);
     });
 
     return () => {
@@ -104,8 +106,8 @@ export default function PartakerView({socket, userName, userList, room}) {
           </div>
         </div>
         <div className="theQuiz">
-          <h3>Scores</h3>
           <Scoreboard scores={scores} />
+          <QuizSummary quiz={quiz} />
         </div>
         <div className="userList">
         </div>

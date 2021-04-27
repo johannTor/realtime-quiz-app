@@ -3,6 +3,7 @@ import { useParams, Redirect } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import CreatorView from '../CreatorView/CreatorView';
 import PartakerView from '../PartakerView/PartakerView';
+import InvalidRoom from '../InvalidRoom/InvalidRoom';
 
 // Somehow call this URL with the quizId as parameter so that a room can be created on the server
 const URL = 'http://localhost:3200';
@@ -19,6 +20,7 @@ export default function QuizPage({location}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [invalidRoom, setInvalidRoom] = useState(false);
   const { quizId } = useParams();
   // console.log('Quiz: ',  quiz);
   // console.log('IsCreator: ', isCreator);
@@ -26,7 +28,7 @@ export default function QuizPage({location}) {
   // console.log('userName: ', userName);
 
   useEffect(() => {
-    socket = io(URL, { autoConnect: false, extraHeaders: {"roomid": quizId}}); // Automatic connection off, call socket.connect() later
+    socket = io(URL, { autoConnect: false, extraHeaders: {"roomid": quizId, "iscreator": isCreator}}); // Automatic connection off, call socket.connect() later
     if(isCreator) {
       setIsLoggedIn(true);
       setUserName('creator');
@@ -36,6 +38,7 @@ export default function QuizPage({location}) {
       if(location.state !== undefined && location.state.userName) {
         setIsLoggedIn(true);
         setUserName(location.state.userName);
+        setInvalidRoom(false);
         socket.auth = { userName: location.state.userName};
         socket.connect();
       }
@@ -46,11 +49,17 @@ export default function QuizPage({location}) {
         console.log('error: already exists', err);
       }
     });
+
+    socket.on('no room', (noRoomObj) => {
+      console.log(noRoomObj.msg);
+      setInvalidRoom(true);
+    });
     // Allow states to be set before render checks are made
     setLoading(false);
     // Clean up listeners when app is dismounted?
     return () => {
       socket.off('connect_error');
+      socket.off('no room');
     }
   }, [isCreator, location.state, quizId]);
 
@@ -58,13 +67,11 @@ export default function QuizPage({location}) {
     if(socket) {
       // Recieve all users that have already connected
       socket.on('users', (users) => {
-        console.log('Incoming users: ', users);
         setUserList(users);
       });
 
       // Recieve a newly connected user
       socket.on('user connected', (user) => {
-        console.log('User connected: ', user);
         setUserList([...userList, user]);
       });
 
@@ -79,7 +86,7 @@ export default function QuizPage({location}) {
         }
       });
     }
-    console.log('UserList now: ', userList);
+
     return () => {
       if(socket) {
         socket.off('users');
@@ -98,7 +105,8 @@ export default function QuizPage({location}) {
 
   return (
     <div className="app">
-      {loading ? <h3>Loading</h3> :
+      {invalidRoom ? <InvalidRoom /> :
+      loading ? <h3>Loading</h3> :
       // If user is creator of a quiz show the creator page, if he is logged in but not a creator show the partaker page, otherwise redirect to login screen
       isCreator ? <CreatorView theQuiz={quiz} userList={userList} socket={socket} room={quizId} /> : ((isLoggedIn && !isCreator) ? <PartakerView socket={socket} userName={userName} userList={userList} room={quizId} /> : <Redirect to={{pathname: '/login', state: {room: quizId}}} />) }
     </div>

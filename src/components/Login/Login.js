@@ -9,11 +9,9 @@ export default function Login({location}) {
   if(location.state !== undefined) {
     roomName = location.state.room;
   }
-  console.log('Roomname: ', roomName);
-
+  
   const handleLogin = (ev) => {
     ev.preventDefault();
-    console.log('Loggin in', userName);
     if(!userName.trim()) {
       console.log('Invalid username');
       return;

@@ -28,6 +28,7 @@ export default function InputModal({setOpen, questionId, question, answers, setQ
     setNewAnswers(ansCpy);
   };
 
+  // When the creator has made it's changes to the question and answers, check for valid entries
   const closeModal = () => {
     setOpen(false);
     setQuestion(newQuestion, questionId);

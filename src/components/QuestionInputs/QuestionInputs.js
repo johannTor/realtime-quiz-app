@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputCard from '../InputCard/InputCard';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,22 @@ export default function QuestionInputs() {
                                               // {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]},
                                               // {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]}]);
   // const [questionList, setQuestionList] = useState([<InputCard />])
+  const [validQuiz, setValidQuiz] = useState(false);
 
+  useEffect(() => {
+    const validateQuiz = (questions) => {
+      if(questions.find((item) => item.question === '' || questions.find((item) => item.answers.find((answer) => answer.answer === '')))) {
+        setValidQuiz(false);
+        console.log('Quiz is invalid');
+      } else {
+        console.log('Quiz is valid');
+        setValidQuiz(true);
+      }
+    };
+    validateQuiz(questions);
+  }, [questions])
+
+  // Add a question object to the question list that the user can edit
   const addInput = () => {
     // const qList = [...questionList, <InputCard />];
     const qCpy = [...questions];
@@ -25,6 +40,7 @@ export default function QuestionInputs() {
     setQuestions(qCpy);
   };
 
+  // Whenever the creator closes the edit modal, the question list is updated
   const updateQuestion = (newQues, id) => {
     const quesCpy = [...questions];
     const foundIndex = quesCpy.findIndex((item) => item.id === id);
@@ -34,6 +50,7 @@ export default function QuestionInputs() {
     }
   };
 
+  // Whenever the creator closes the edit modal, the answers wlil be updated to the correct question
   const updateAnswers = (answers, id) => {
     const quesCpy = [...questions];
     const foundIndex = quesCpy.findIndex((item) => item.id === id);
@@ -42,6 +59,17 @@ export default function QuestionInputs() {
       setQuestions(quesCpy);
     }
   };
+
+  // Check for at least one question with at least one answer
+  // const validateQuiz = () => {
+  //   if(questions.length >= 1) {
+  //     // If we have at least once answer that is correct, we return true
+  //     if(questions[0].answers.length >= 1 && questions[0].answers.find((item) => item.isCorrect === true)) {
+  //       return true;
+  //     }
+  //   }
+  //    return false;
+  // };
 
   // const listElement = questionList.map((item, index) => <React.Fragment key={index}>{item}</React.Fragment>);
 
@@ -65,13 +93,19 @@ export default function QuestionInputs() {
             +
           </div>
         </div>
+        <div>
+          <h3>{validQuiz ? 'Quiz is lookin good' : 'Be sure to leave no missing fields'}</h3>
+        </div>
       </div>
       {/* ToDo: Create a route with either a random parameter or a chosen name for the quiz, connect the user there to socket io */}
       <div className="rightSideBar">
-        <Link className="startQuizBtn" to={{
+        {/* Check for valid quiz before sending user to quiz page */}
+        <Link className="startQuizBtn" to={
+          validQuiz ?
+        {
           pathname: `/quiz/${uuidv4().replaceAll('-', '')}`,
           state: { quizCreator: true, theQuiz: questions }
-        }}>Create Quiz</Link>
+        } : '#'}>Create Quiz</Link>
         {/* Nýtt route fyrir room */}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UserList from '../UserList/UserList';
 import Scoreboard from '../Scoreboard/Scoreboard';
+import QuizSummary from '../QuizSummary/QuizSummary';
 import './creatorView.css';
 
 export default function CreatorView({theQuiz, userList, socket, room}) {
@@ -61,14 +62,13 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
     }
   }, [quizStarted]);
 
-  useEffect(() => {
-    console.log('Usas: ', usersWhoHaveAnswered);
-  }, [usersWhoHaveAnswered]);
+  // useEffect(() => {
+  //   console.log('Usas: ', usersWhoHaveAnswered);
+  // }, [usersWhoHaveAnswered]);
 
   useEffect(() => {
     // Check to see if we're on the last question
     if(currentQuestion === theQuiz.length-1) {
-      console.log('lastQuestion yes');
       setIsFinalQuestion(true);
     }
   }, [currentQuestion, theQuiz.length]);
@@ -96,9 +96,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       socket.emit('next question', questionObj);
       setUsersWhoHaveAnswered([]);
     } else {  // We are on the last question
-      // ToDo: Finish Quiz Screen/event
-      // Emit final next question
-      console.log('Final Ques');
+      console.log('Emitting last status')
       const questionObj = {status: false, room};
       socket.emit('next question', questionObj); // Sending the next question event with status false, indicating the quiz has ended
     }
@@ -129,8 +127,12 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
             </div>
           </div>
           <div className="theQuiz">
-            <h3>Quiz finished</h3>
-            {showScores ? <Scoreboard scores={scores} /> : <button onClick={() => handleScoreboard()}>Show Results</button>}
+            {showScores ? 
+              <>
+                <Scoreboard scores={scores} />
+                <QuizSummary quiz={theQuiz} />
+              </>
+            : <button onClick={() => handleScoreboard()}>Show Results</button>}
             
           </div>
         </>
