@@ -1,5 +1,5 @@
-import CreateQuiz from './components/CreateQuiz';
-import QuizPage from './components/QuizPage';
+import CreateQuiz from './components/CreateQuiz/CreateQuiz';
+import QuizPage from './components/QuizPage/QuizPage';
 import Login from './components/Login/Login';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';

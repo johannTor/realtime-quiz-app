@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import AnswerItem from './AnswerItem';
+import AnswerItem from '../AnswerItem/AnswerItem';
+import './inputModal.css';
 // import { v4 as uuidv4 } from 'uuid';
 
 // ToDo: Import react modal?

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import UserList from '../UserList/UserList';
+import Scoreboard from '../Scoreboard/Scoreboard';
 import './creatorView.css';
 
 export default function CreatorView({theQuiz, userList, socket, room}) {
@@ -7,11 +8,52 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
   const [itemClass, setItemClass] = useState('quizAnswer');
   const [show, setShow] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [usersWhoHaveAnswered, setUsersWhoHaveAnswered] = useState([]);
+  const [scores, setScores] = useState({});
+  const [isFinalQuestion, setIsFinalQuestion] = useState(false);
+  const [finalAnswer, setFinalAnswer] = useState(false);
+  const [showScores, setShowScores] = useState(false);
   const url = window.location.href;
 
   useEffect(() => {
-    // setTimeout(() => setHladid(true), 1000);
-  }, []);
+    const newScores = {};
+    for(let i = 0; i < userList.length; i++) {
+      newScores[userList[i].username] = 0;
+    }
+    setScores(newScores);
+    // console.log('Scores now: ', newScores);
+  }, [userList]);
+
+  useEffect(() => {
+    socket.on('mark answered', (userObj) => {
+      const { userId } = userObj;
+      if(!usersWhoHaveAnswered.includes(userId)) {
+        setUsersWhoHaveAnswered([...usersWhoHaveAnswered, userId]);
+      }
+    });
+
+    // Everytime 
+    socket.on('log answer', (answerObj) => {
+      console.log('recieved log: ', answerObj);
+      const {userId, chosenAnswer, status} = answerObj;
+      const foundUser = userList.find((user) => user.userID === userId);
+      if(chosenAnswer.isCorrect) {
+        const cpy = {...scores};
+        cpy[foundUser.username] += 1;
+        setScores(cpy);
+      }
+      // If status is false, the last answer has been logged
+      if(!status) {
+        console.log('Final gotten');
+        setFinalAnswer(true);
+      }
+    });
+
+    return () => {
+      socket.off('mark answered');
+      socket.off('log answer');
+    };
+  }, [socket, usersWhoHaveAnswered, userList, scores]);
 
   useEffect(() => {
     if(quizStarted) {
@@ -19,13 +61,31 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
     }
   }, [quizStarted]);
 
+  useEffect(() => {
+    console.log('Usas: ', usersWhoHaveAnswered);
+  }, [usersWhoHaveAnswered]);
+
+  useEffect(() => {
+    // Check to see if we're on the last question
+    if(currentQuestion === theQuiz.length-1) {
+      console.log('lastQuestion yes');
+      setIsFinalQuestion(true);
+    }
+  }, [currentQuestion, theQuiz.length]);
+
+  useEffect(() => {
+    // console.log('Scores now: ', scores);
+  }, [scores])
+
+  // Start quiz for everyone
   const startQuiz = () => {
     setQuizStarted(true);
     fadeAnswers();
     const startObj = {msg: 'Quiz has started', status: true, room, question: theQuiz[currentQuestion], questionCount: theQuiz.length};
     socket.emit('start quiz', startObj);
   }
-  // Len = 2 
+  
+  // Send the next question to the users
   const nextQuestion = () => {
     // Check if we still have at least one question left
     if(currentQuestion < theQuiz.length -1) {
@@ -34,9 +94,13 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       setCurrentQuestion(oldQuestion+1);
       const questionObj = {msg: 'Next question', status: true, room, question: theQuiz[oldQuestion+1], currentIndex: oldQuestion+1};
       socket.emit('next question', questionObj);
+      setUsersWhoHaveAnswered([]);
     } else {  // We are on the last question
       // ToDo: Finish Quiz Screen/event
+      // Emit final next question
       console.log('Final Ques');
+      const questionObj = {status: false, room};
+      socket.emit('next question', questionObj); // Sending the next question event with status false, indicating the quiz has ended
     }
   };
 
@@ -45,12 +109,32 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
     setItemClass('quizAnswer'); // Hiding;
     setTimeout(() => setItemClass('quizAnswer showAnswer'), 300);
   };
+
+  // Send score results to all clients
+  const handleScoreboard = () => {
+    console.log('Send scores');
+    socket.emit('show scores', {scores, theQuiz, room});
+    setShowScores(true);
+  };
   
-  console.log('Loaded: ', show);
+  // console.log('Loaded: ', show);
   const answerClasses = show ? 'quizAnswers answerBorder' : 'quizAnswers answerBorder collapsed';
   return (
-    <div className="creatorPanels">
-      {quizStarted ? 
+    <div className="pagePanels">
+      {finalAnswer ? 
+        <>
+          <div className="leftSidebar">
+            <div className="logo">
+              InstaQuiz
+            </div>
+          </div>
+          <div className="theQuiz">
+            <h3>Quiz finished</h3>
+            {showScores ? <Scoreboard scores={scores} /> : <button onClick={() => handleScoreboard()}>Show Results</button>}
+            
+          </div>
+        </>
+      : quizStarted ? 
       <>
         <div className="leftSidebar">
           <div className="logo">
@@ -63,7 +147,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
           <div className={answerClasses}>
             {theQuiz[currentQuestion].answers.map((item) => <div key={item.id} className={itemClass}>{item.answer}</div>)}
           </div>
-          <button className="quizButton" onClick={() => nextQuestion()}>Next Question</button>
+          <button className="quizButton" onClick={() => nextQuestion()}>{isFinalQuestion ? 'Finish' : 'Next Question'}</button>
         </div>
       </>
       :
@@ -80,7 +164,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
           <button onClick={() => startQuiz()}>Start Quiz</button>
         </div>
       </> }
-      <UserList users={userList}/>
+      <UserList users={userList} answeredUsers={usersWhoHaveAnswered} socket={socket}/>
     </div>
   )
 }

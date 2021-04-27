@@ -1,0 +1,14 @@
+.inputCard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 8rem;
+  background-color: rgba(0,0,0,0);
+  cursor: default;
+  padding: 0.5rem 1rem;
+  transition: transform 0.1s ease-out;
+}
+
+.inputCard:hover {
+  transform: scale(1.02);
+}

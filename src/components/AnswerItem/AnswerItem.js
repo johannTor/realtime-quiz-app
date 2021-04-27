@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import './answerItem.css';
 
 export default function AnswerItem({id, currAnswer, currCorrect, num, changeAnswer, changeCorrect}) {
   const [answer, setAnswer] = useState(currAnswer);

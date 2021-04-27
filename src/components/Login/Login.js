@@ -23,7 +23,7 @@ export default function Login({location}) {
 
   return (
     <div className="app">
-      <div className="partakerPanels">
+      <div className="pagePanels">
         <div className="leftSidebar">
           <div className="logo">
             InstaQuiz

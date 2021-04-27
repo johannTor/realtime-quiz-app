@@ -1,0 +1,68 @@
+.creatorContent {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 15vh;
+  gap: 2rem;
+}
+
+.questionGreeting {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.8px;
+  font-size: 18px;
+}
+
+.questionGreeting div {
+  text-align: center;
+}
+
+.questionInputs {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 1rem 0;
+}
+
+.addQuestion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5rem;
+  justify-self: center;
+  min-height: 5rem;
+  font-size: 32px;
+  background-color: rgba(0,0,0,0);
+  transition: transform 0.1s ease-out;
+  cursor: default;
+}
+
+.addQuestion:hover {
+  transform: scale(1.02);
+}
+
+.startQuizBtn {
+  color: #000;
+  padding: 1rem;
+  background-color: rgba(0,0,0,0);
+  border: 1px solid rgb(0, 0, 0);
+  font-size: 18px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.1s ease-out;
+}
+
+.startQuizBtn:hover {
+  transform: scale(1.05);
+}

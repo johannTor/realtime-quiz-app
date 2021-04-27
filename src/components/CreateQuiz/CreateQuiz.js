@@ -1,5 +1,5 @@
 import React, {  } from 'react';
-import QuestionInputs from './QuestionInputs';
+import QuestionInputs from '../QuestionInputs/QuestionInputs';
 
 export default function CreateQuiz() {
   return (

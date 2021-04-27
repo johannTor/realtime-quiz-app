@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import InputModal from './InputModal';
+import InputModal from '../InputModal/InputModal';
+import './inputCard.css';
 
 // Answer object should have:
 /*

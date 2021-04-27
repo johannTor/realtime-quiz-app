@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import { io } from 'socket.io-client';
-import CreatorView from './CreatorView/CreatorView';
-import PartakerView from './PartakerView/PartakerView';
+import CreatorView from '../CreatorView/CreatorView';
+import PartakerView from '../PartakerView/PartakerView';
 
 // Somehow call this URL with the quizId as parameter so that a room can be created on the server
 const URL = 'http://localhost:3200';
@@ -56,11 +56,13 @@ export default function QuizPage({location}) {
 
   useEffect(() => {
     if(socket) {
+      // Recieve all users that have already connected
       socket.on('users', (users) => {
         console.log('Incoming users: ', users);
         setUserList(users);
       });
 
+      // Recieve a newly connected user
       socket.on('user connected', (user) => {
         console.log('User connected: ', user);
         setUserList([...userList, user]);
@@ -98,7 +100,7 @@ export default function QuizPage({location}) {
     <div className="app">
       {loading ? <h3>Loading</h3> :
       // If user is creator of a quiz show the creator page, if he is logged in but not a creator show the partaker page, otherwise redirect to login screen
-      isCreator ? <CreatorView theQuiz={quiz} userList={userList} socket={socket} room={quizId} /> : ((isLoggedIn && !isCreator) ? <PartakerView socket={socket} userName={userName} userList={userList} /> : <Redirect to={{pathname: '/login', state: {room: quizId}}} />) }
+      isCreator ? <CreatorView theQuiz={quiz} userList={userList} socket={socket} room={quizId} /> : ((isLoggedIn && !isCreator) ? <PartakerView socket={socket} userName={userName} userList={userList} room={quizId} /> : <Redirect to={{pathname: '/login', state: {room: quizId}}} />) }
     </div>
   )
 }
