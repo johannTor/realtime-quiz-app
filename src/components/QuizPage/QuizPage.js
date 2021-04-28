@@ -6,7 +6,7 @@ import PartakerView from '../PartakerView/PartakerView';
 import InvalidRoom from '../InvalidRoom/InvalidRoom';
 
 // Somehow call this URL with the quizId as parameter so that a room can be created on the server
-const URL = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 'http://localhost:3200' : 'https://realtime-quiz-server.herokuapp.com/';
+const URL = !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 'http://localhost:3200' : 'https://realtime-quiz-server.herokuapp.com';
 let socket;
 
 // Reorganize the login chec, I'm checking first if location.state is undefined, if it isnt im checking if it contains correct properties
