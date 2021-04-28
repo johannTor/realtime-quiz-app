@@ -28,7 +28,7 @@ export default function QuizPage({location}) {
   // console.log('userName: ', userName);
 
   useEffect(() => {
-    socket = io(URL, { autoConnect: false, extraHeaders: {"roomid": quizId, "iscreator": isCreator}}); // Automatic connection off, call socket.connect() later
+    socket = io(URL, { withCredentials: true, autoConnect: false, extraHeaders: {"roomid": quizId, "iscreator": isCreator}}); // Automatic connection off, call socket.connect() later
     if(isCreator) {
       setIsLoggedIn(true);
       setUserName('creator');
