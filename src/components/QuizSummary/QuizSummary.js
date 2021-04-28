@@ -2,7 +2,6 @@ import React from 'react';
 import './quizSummary.css';
 
 export default function QuizSummar({quiz}) {
-  console.log('Q: ', quiz);
   return (
     <div className="summaryContainer">
       <h2>Correct answers:</h2>

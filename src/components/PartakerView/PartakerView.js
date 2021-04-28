@@ -23,7 +23,7 @@ export default function PartakerView({socket, userName, userList, room}) {
   useEffect(() => {
     // Host has started the quiz
     socket.on('quiz started', (quizObj) => {  // I'm recieving a message property, somehow display a toast that quiz has started?
-      console.log('Recieved quiz started');
+      // console.log('Recieved quiz started');
       setHasStarted(quizObj.status);
       fadeAnswers();
       setCurrentQuestion(quizObj.question);
@@ -48,7 +48,7 @@ export default function PartakerView({socket, userName, userList, room}) {
         setCurrentPosition(qObject.currentIndex + 1);
         setChosenAnswer(undefined);
       } else {
-        console.log('finishing');
+        // console.log('finishing');
         processChosenAnswer(false);
         setIsFinished(true);
       }

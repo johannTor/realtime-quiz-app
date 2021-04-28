@@ -33,9 +33,9 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       }
     });
 
-    // Everytime 
+    // Everytime we go to the next question we recieve the answers from all users and log the score
     socket.on('log answer', (answerObj) => {
-      console.log('recieved log: ', answerObj);
+      // console.log('recieved log: ', answerObj);
       const {userId, chosenAnswer, status} = answerObj;
       const foundUser = userList.find((user) => user.userID === userId);
       if(chosenAnswer.isCorrect) {

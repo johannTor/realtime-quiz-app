@@ -33,6 +33,7 @@ button {
   background-color: #282c34;
   background-image: linear-gradient(to bottom right, #3F3DAF, #F4CF97);
   color: #fff;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .pagePanels {

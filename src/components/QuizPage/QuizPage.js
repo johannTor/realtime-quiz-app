@@ -76,11 +76,11 @@ export default function QuizPage({location}) {
       });
 
       socket.on('user disconnected', (id) => {
-        console.log('User disconnected id: ', id);
+        // console.log('User disconnected id: ', id);
         const usersCpy = [...userList];
         const foundUser = usersCpy.findIndex((item) => item.userID === id);
         if(foundUser !== -1) {
-          console.log(usersCpy[foundUser].username + ' has disconnected'); // Maybe send this msg from server?
+          // console.log(usersCpy[foundUser].username + ' has disconnected'); // Maybe send this msg from server?
           usersCpy.splice(foundUser, 1);
           setUserList(usersCpy);
         }

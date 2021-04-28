@@ -6,10 +6,10 @@ import './questionInputs.css';
 
 export default function QuestionInputs() {
   // Initial questions state for real use
-  // const [questions, setQuestions] = useState([{id: uuidv4(), question: 'Create Question', answers: [{id: 0, answer: '', isCorrect: false}]}]);
-  const [questions, setQuestions] = useState([{id: uuidv4(), question: 'What is the capital of France?', answers: [{id: 0, answer: 'Paris', isCorrect: true}, {id: 1, answer: 'Berlin', isCorrect: false}, {id: 2, answer: 'Moscow', isCorrect: false}]},
-                                              {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
-                                              {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]}]);
+  const [questions, setQuestions] = useState([{id: uuidv4(), question: 'Create Question', answers: [{id: 0, answer: '', isCorrect: false}]}]);
+  // const [questions, setQuestions] = useState([{id: uuidv4(), question: 'What is the capital of France?', answers: [{id: 0, answer: 'Paris', isCorrect: true}, {id: 1, answer: 'Berlin', isCorrect: false}, {id: 2, answer: 'Moscow', isCorrect: false}]},
+  //                                             {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
+  //                                             {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]}]);
                                               // {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]},
                                               // {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
                                               // {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]},
@@ -18,12 +18,21 @@ export default function QuestionInputs() {
   const [validQuiz, setValidQuiz] = useState(false);
 
   useEffect(() => {
+    // Check each question seperatly to see if they have at least one correct answer
+    const checkForCorrectAnswer = () => {
+      for(let i = 0; i < questions.length; i++) {
+        if(questions[i].answers.every((element) => element.isCorrect === false)) {
+          return false
+        }
+      }
+      return true;
+    };
+
     const validateQuiz = (questions) => {
-      if(questions.find((item) => item.question === '' || questions.find((item) => item.answers.find((answer) => answer.answer === '')))) {
+      // If we find a question or an answer with no text, the quiz is invalid
+      if(questions.find((item) => item.question === '') || questions.find((item) => item.answers.find((answer) => answer.answer === '')) || !checkForCorrectAnswer()) {
         setValidQuiz(false);
-        console.log('Quiz is invalid');
       } else {
-        console.log('Quiz is valid');
         setValidQuiz(true);
       }
     };
@@ -82,7 +91,7 @@ export default function QuestionInputs() {
       </div>
       <div className="creatorContent">
         <div className="questionGreeting">
-          <div>Do you want to create a quiz and allow your students/co-workers/friends/family to participate in real time? If so you're in the right place!</div>
+          <div>Do you want to create a quiz and allow your students/co-workers/friends/family to participate in real time? If so, you're in the right place!</div>
           <div>Start by</div>
           <div>Creating your questions</div>
         </div>
@@ -94,7 +103,7 @@ export default function QuestionInputs() {
           </div>
         </div>
         <div>
-          <h3>{validQuiz ? 'Quiz is lookin good' : 'Be sure to leave no missing fields'}</h3>
+          <h3>{validQuiz ? 'Quiz is lookin good' : 'Make sure there are no empty fields, and that each question has a correct answer'}</h3>
         </div>
       </div>
       {/* ToDo: Create a route with either a random parameter or a chosen name for the quiz, connect the user there to socket io */}
