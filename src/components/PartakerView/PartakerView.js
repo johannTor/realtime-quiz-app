@@ -40,7 +40,7 @@ export default function PartakerView({socket, userName, userList, room}) {
 
       // If the recieved status is true, quiz is still going on
       if(qObject.status) {
-        console.log('continuing');
+        // console.log('continuing');
         processChosenAnswer(true); // Process the chosen answer for scoreboard history
         fadeAnswers();
         setCurrentQuestion(qObject.question);
@@ -56,7 +56,7 @@ export default function PartakerView({socket, userName, userList, room}) {
 
     // Recieving quiz scores from host once all answers have been recieved
     socket.on('get scores', (scoreObj) => {
-      console.log('Recieved scores ', scoreObj);
+      // console.log('Recieved scores ', scoreObj);
       setIsFinished(true);
       setScores(scoreObj.scores);
       setQuiz(scoreObj.theQuiz);

@@ -17,13 +17,16 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
   const url = window.location.href;
 
   useEffect(() => {
-    const newScores = {};
-    for(let i = 0; i < userList.length; i++) {
-      newScores[userList[i].username] = 0;
+    if(!quizStarted) {
+      console.log('initializing scores');
+      const newScores = {};
+      for(let i = 0; i < userList.length; i++) {
+        newScores[userList[i].username] = 0;
+      }
+      setScores(newScores);
     }
-    setScores(newScores);
     // console.log('Scores now: ', newScores);
-  }, [userList]);
+  }, [userList, quizStarted]);
 
   useEffect(() => {
     socket.on('mark answered', (userObj) => {
@@ -43,9 +46,8 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
         cpy[foundUser.username] += 1;
         setScores(cpy);
       }
-      // If status is false, the last answer has been logged
+      // If status is false, the last answers are being logged
       if(!status) {
-        console.log('Final gotten');
         setFinalAnswer(true);
       }
     });
@@ -96,7 +98,6 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
       socket.emit('next question', questionObj);
       setUsersWhoHaveAnswered([]);
     } else {  // We are on the last question
-      console.log('Emitting last status')
       const questionObj = {status: false, room};
       socket.emit('next question', questionObj); // Sending the next question event with status false, indicating the quiz has ended
     }
@@ -110,12 +111,11 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
 
   // Send score results to all clients
   const handleScoreboard = () => {
-    console.log('Send scores');
     socket.emit('show scores', {scores, theQuiz, room});
     setShowScores(true);
   };
   
-  // console.log('Loaded: ', show);
+  // Give the remove the collapsed class once quiz should be shown
   const answerClasses = show ? 'quizAnswers answerBorder' : 'quizAnswers answerBorder collapsed';
   return (
     <div className="pagePanels">
