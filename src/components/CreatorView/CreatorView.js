@@ -17,6 +17,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
   const url = window.location.href;
 
   useEffect(() => {
+    // When users start connecting, initialize the scoreObject (if the quiz hasn't started)
     if(!quizStarted) {
       console.log('initializing scores');
       const newScores = {};
@@ -29,6 +30,7 @@ export default function CreatorView({theQuiz, userList, socket, room}) {
   }, [userList, quizStarted]);
 
   useEffect(() => {
+    // Event that partakers emit once they have selected any answer
     socket.on('mark answered', (userObj) => {
       const { userId } = userObj;
       if(!usersWhoHaveAnswered.includes(userId)) {

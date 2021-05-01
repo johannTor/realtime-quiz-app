@@ -50,6 +50,7 @@ export default function QuizPage({location}) {
       }
     });
 
+    // The server has emitted an event indicating a room does not exist. Won´t be called for a creator since he has to create the room
     socket.on('no room', (noRoomObj) => {
       console.log(noRoomObj.msg);
       setInvalidRoom(true);

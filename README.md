@@ -1,6 +1,6 @@
 # Realtime Quiz App
 
-Small quiz app I created with React in order to practice using the [Socket.IO](https://socket.io) library.
+A realtime quiz app I created with React in order to practice using the [Socket.IO](https://socket.io) library.
 
 [The quiz server repository](https://github.com/johannTor/realtime-quiz-server)
 
