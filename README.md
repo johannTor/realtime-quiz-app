@@ -4,6 +4,8 @@ A realtime quiz app I created with React in order to practice using the [Socket.
 
 [The quiz server repository](https://github.com/johannTor/realtime-quiz-server)
 
+[Live App](https://insta-quiz.netlify.app/)
+
 ## What the app features
 
 * The ability to create questions and answers
