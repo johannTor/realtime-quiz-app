@@ -5,7 +5,7 @@ h3 {
 input {
   padding: 0.6rem;
   font-size: 16px;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   color: #fff;
   border: 1px solid #000;
 }
@@ -21,7 +21,7 @@ input:focus {
 button {
   color: #fff;
   padding: 1rem 2rem;
-  background-color: rgba(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0);
   font-size: 18px;
   font-weight: 400;
 }
@@ -31,9 +31,9 @@ button {
   min-height: 100vh;
   /* remove? */
   background-color: #282c34;
-  background-image: linear-gradient(to bottom right, #3F3DAF, #F4CF97);
+  background-image: linear-gradient(to bottom right, #3f3daf, #f4cf97);
   color: #fff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .pagePanels {
@@ -86,11 +86,11 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* Scrollbar */ 
+/* Scrollbar */
 
 /* width */
 ::-webkit-scrollbar {
@@ -121,5 +121,11 @@ input[type=number] {
 
   .pagePanels {
     flex-direction: column;
+  }
+
+  .leftSidebar {
+    align-self: center;
+    width: 100%;
+    align-items: center;
   }
 }

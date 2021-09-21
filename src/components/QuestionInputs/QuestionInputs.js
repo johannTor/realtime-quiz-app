@@ -1,28 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import InputCard from '../InputCard/InputCard';
-import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
-import './questionInputs.css';
+import React, { useState, useEffect } from "react";
+import InputCard from "../InputCard/InputCard";
+import { v4 as uuidv4 } from "uuid";
+import { Link } from "react-router-dom";
+import "./questionInputs.css";
 
 export default function QuestionInputs() {
   // Initial questions state for real use
-  const [questions, setQuestions] = useState([{id: uuidv4(), question: 'Create Question', answers: [{id: 0, answer: '', isCorrect: false}]}]);
-  // const [questions, setQuestions] = useState([{id: uuidv4(), question: 'What is the capital of France?', answers: [{id: 0, answer: 'Paris', isCorrect: true}, {id: 1, answer: 'Berlin', isCorrect: false}, {id: 2, answer: 'Moscow', isCorrect: false}]},
-  //                                             {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
-  //                                             {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]}]);
-                                              // {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]},
-                                              // {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
-                                              // {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]},
-                                              // {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]}]);
+  const [questions, setQuestions] = useState([
+    {
+      id: uuidv4(),
+      question: "Create Question",
+      answers: [{ id: 0, answer: "", isCorrect: false }],
+    },
+  ]);
+  // const [questions, setQuestions] = useState([
+  //   {
+  //     id: uuidv4(),
+  //     question: "What is the capital of France?",
+  //     answers: [
+  //       { id: 0, answer: "Paris", isCorrect: true },
+  //       { id: 1, answer: "Berlin", isCorrect: false },
+  //       { id: 2, answer: "Moscow", isCorrect: false },
+  //     ],
+  //   },
+  //   {
+  //     id: uuidv4(),
+  //     question: "What is the capital of Russia?",
+  //     answers: [
+  //       { id: 0, answer: "New York", isCorrect: false },
+  //       { id: 1, answer: "Moscow", isCorrect: true },
+  //       { id: 2, answer: "Reykjavik", isCorrect: false },
+  //     ],
+  //   },
+  //   {
+  //     id: uuidv4(),
+  //     question: "What is the capital of Spain?",
+  //     answers: [
+  //       { id: 0, answer: "Dallas", isCorrect: false },
+  //       { id: 1, answer: "Carthage", isCorrect: false },
+  //       { id: 2, answer: "Madrid", isCorrect: true },
+  //     ],
+  //   },
+  // ]);
+  // {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]},
+  // {id: uuidv4(), question: 'What is the capital of Russia?', answers: [{id: 0, answer: 'New York', isCorrect: false}, {id: 1, answer: 'Moscow', isCorrect: true}, {id: 2, answer: 'Reykjavik', isCorrect: false}]},
+  // {id: uuidv4(), question: 'What is the capital of Spain?', answers: [{id: 0, answer: 'Dallas', isCorrect: false}, {id: 1, answer: 'Carthage', isCorrect: false}, {id: 2, answer: 'Madrid', isCorrect: true}]},
+  // {id: uuidv4(), question: 'What is the capital of Italy?', answers: [{id: 0, answer: 'Rome', isCorrect: true}, {id: 1, answer: 'Kopenhagen', isCorrect: true}, {id: 2, answer: 'Stockholm', isCorrect: false}]}]);
   // const [questionList, setQuestionList] = useState([<InputCard />])
   const [validQuiz, setValidQuiz] = useState(false);
 
   useEffect(() => {
     // Check each question seperatly to see if they have at least one correct answer
     const checkForCorrectAnswer = () => {
-      for(let i = 0; i < questions.length; i++) {
-        if(questions[i].answers.every((element) => element.isCorrect === false)) {
-          return false
+      for (let i = 0; i < questions.length; i++) {
+        if (
+          questions[i].answers.every((element) => element.isCorrect === false)
+        ) {
+          return false;
         }
       }
       return true;
@@ -30,20 +64,30 @@ export default function QuestionInputs() {
 
     const validateQuiz = (questions) => {
       // If we find a question or an answer with no text, the quiz is invalid
-      if(questions.find((item) => item.question === '') || questions.find((item) => item.answers.find((answer) => answer.answer === '')) || !checkForCorrectAnswer()) {
+      if (
+        questions.find((item) => item.question === "") ||
+        questions.find((item) =>
+          item.answers.find((answer) => answer.answer === "")
+        ) ||
+        !checkForCorrectAnswer()
+      ) {
         setValidQuiz(false);
       } else {
         setValidQuiz(true);
       }
     };
     validateQuiz(questions);
-  }, [questions])
+  }, [questions]);
 
   // Add a question object to the question list that the user can edit
   const addInput = () => {
     // const qList = [...questionList, <InputCard />];
     const qCpy = [...questions];
-    const newQ = {id: uuidv4(), question: 'Create Question', answers: [{id: 0, answer: '', isCorrect: false}]};
+    const newQ = {
+      id: uuidv4(),
+      question: "Create Question",
+      answers: [{ id: 0, answer: "", isCorrect: false }],
+    };
     qCpy.push(newQ);
     // setQuestionList(qList);
     setQuestions(qCpy);
@@ -53,7 +97,7 @@ export default function QuestionInputs() {
   const updateQuestion = (newQues, id) => {
     const quesCpy = [...questions];
     const foundIndex = quesCpy.findIndex((item) => item.id === id);
-    if(foundIndex !== -1) {
+    if (foundIndex !== -1) {
       quesCpy[foundIndex].question = newQues;
       setQuestions(quesCpy);
     }
@@ -63,7 +107,7 @@ export default function QuestionInputs() {
   const updateAnswers = (answers, id) => {
     const quesCpy = [...questions];
     const foundIndex = quesCpy.findIndex((item) => item.id === id);
-    if(foundIndex !== -1) {
+    if (foundIndex !== -1) {
       quesCpy[foundIndex].answers = answers;
       setQuestions(quesCpy);
     }
@@ -85,38 +129,60 @@ export default function QuestionInputs() {
   return (
     <div className="pagePanels">
       <div className="leftSidebar">
-        <div className="logo">
-          InstaQuiz
-        </div>
+        <div className="logo">InstaQuiz</div>
       </div>
       <div className="creatorContent">
         <div className="questionGreeting">
-          <div>Do you want to create a quiz and allow your students/co-workers/friends/family to participate in real time? If so, you're in the right place!</div>
+          <div>
+            Do you want to create a quiz and allow your
+            students/co-workers/friends/family to participate in real time? If
+            so, you're in the right place!
+          </div>
           <div>Start by</div>
           <div>Creating your questions</div>
         </div>
         <div className="questionInputs">
           {/* {listElement} */}
-          {questions.map((item, index) => <InputCard key={index} questionId={item.id} question={item.question} answers={item.answers} setQuestion={updateQuestion} setAnswers={updateAnswers} />)}
+          {questions.map((item, index) => (
+            <InputCard
+              key={index}
+              questionId={item.id}
+              question={item.question}
+              answers={item.answers}
+              setQuestion={updateQuestion}
+              setAnswers={updateAnswers}
+            />
+          ))}
           <div className="addQuestion buttonBorder" onClick={() => addInput()}>
             +
           </div>
         </div>
         <div>
-          <h3>{validQuiz ? 'Quiz is lookin good' : 'Make sure there are no empty fields, and that each question has a correct answer'}</h3>
+          <h3>
+            {validQuiz
+              ? "Quiz is lookin good"
+              : "Make sure there are no empty fields, and that each question has a correct answer"}
+          </h3>
         </div>
       </div>
       {/* ToDo: Create a route with either a random parameter or a chosen name for the quiz, connect the user there to socket io */}
       <div className="rightSideBar">
         {/* Check for valid quiz before sending user to quiz page */}
-        <Link className="startQuizBtn" to={
-          validQuiz ?
-        {
-          pathname: `/quiz/${uuidv4().replaceAll('-', '')}`,
-          state: { quizCreator: true, theQuiz: questions }
-        } : '#'}>Create Quiz</Link>
+        <Link
+          className="startQuizBtn"
+          to={
+            validQuiz
+              ? {
+                  pathname: `/quiz/${uuidv4().replaceAll("-", "")}`,
+                  state: { quizCreator: true, theQuiz: questions },
+                }
+              : "#"
+          }
+        >
+          Create Quiz
+        </Link>
         {/* Nýtt route fyrir room */}
       </div>
     </div>
-  )
+  );
 }
